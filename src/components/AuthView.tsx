@@ -149,7 +149,7 @@ export default function AuthView({
       role: regRole,
       kycStatus: 'Not verified',
       kycDetails: null,
-      balance: regRole === 'admin' ? 99999.00 : 500.00, // Prefilled 500 BDT bonus for user registration!
+      balance: regRole === 'admin' ? 99999.00 : 0.00, // Prefilled 0 BDT starting balance for user registration!
       todayCommission: 0.00,
       totalCommission: 0.00,
       todayDeposit: 0.00,
@@ -316,7 +316,7 @@ export default function AuthView({
                 className="w-full py-3 bg-amber-500 hover:bg-amber-400 text-black text-xs font-black uppercase tracking-wider rounded-xl shadow-lg transition-all active:scale-95 cursor-pointer mt-2"
                 id="login-submit-btn"
               >
-                {isBangla ? 'প্রবেশ করুন' : 'Unlock Dashboard'}
+                {isBangla ? 'লগইন করুন' : 'Login'}
               </button>
             </form>
           )}
