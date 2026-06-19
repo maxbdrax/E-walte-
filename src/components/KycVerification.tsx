@@ -124,7 +124,7 @@ export default function KycVerification({
         </p>
         <button
           onClick={onBack}
-          className="w-full max-w-xs py-3 px-6 rounded-xl bg-violet-600 hover:bg-violet-700 text-white font-bold tracking-wide shadow-lg active:scale-95 transition-all cursor-pointer"
+          className="w-full max-w-xs py-3 px-6 rounded-xl bg-sky-500 hover:bg-sky-600 text-white font-bold tracking-wide shadow-lg active:scale-95 transition-all cursor-pointer"
           id="kyc-success-back-btn"
         >
           {isBangla ? 'হোমে ফিরে যান' : 'Back to Dashboard'}
@@ -139,7 +139,7 @@ export default function KycVerification({
     }`} id="kyc-verification-wizard">
       
       {/* Top Banner (Header) */}
-      <div className="flex items-center px-4 py-4 bg-violet-600 text-white shadow-md relative">
+      <div className="flex items-center px-4 py-4 bg-gradient-to-r from-sky-500 to-cyan-500 text-white shadow-md relative">
         <button
           onClick={step === 2 ? () => setStep(1) : onBack}
           className="p-1 rounded-full hover:bg-white/10 text-white transition-all cursor-pointer"
@@ -169,10 +169,10 @@ export default function KycVerification({
                 value={firstName}
                 onChange={(e) => setFirstName(e.target.value)}
                 placeholder={isBangla ? 'আপনার প্রথম নাম দিন' : 'Enter first name'}
-                className={`w-full py-3 px-4 rounded-xl text-sm font-medium border focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all ${
+                className={`w-full py-3 px-4 rounded-xl text-sm font-medium border focus:outline-none focus:ring-2 focus:ring-sky-500/50 transition-all ${
                   isDarkMode 
-                    ? 'bg-slate-900 border-slate-800 text-white focus:border-violet-500' 
-                    : 'bg-white border-gray-200 text-gray-800 focus:border-violet-500 shadow-sm'
+                    ? 'bg-slate-900 border-slate-800 text-white focus:border-sky-500' 
+                    : 'bg-white border-gray-200 text-gray-800 focus:border-sky-500 shadow-sm'
                 }`}
                 required
               />
@@ -189,10 +189,10 @@ export default function KycVerification({
                 value={lastName}
                 onChange={(e) => setLastName(e.target.value)}
                 placeholder={isBangla ? 'আপনার শেষ নাম দিন' : 'Enter last name'}
-                className={`w-full py-3 px-4 rounded-xl text-sm font-medium border focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all ${
+                className={`w-full py-3 px-4 rounded-xl text-sm font-medium border focus:outline-none focus:ring-2 focus:ring-sky-500/50 transition-all ${
                   isDarkMode 
-                    ? 'bg-slate-900 border-slate-800 text-white focus:border-violet-500' 
-                    : 'bg-white border-gray-200 text-gray-800 focus:border-violet-500 shadow-sm'
+                    ? 'bg-slate-900 border-slate-800 text-white focus:border-sky-500' 
+                    : 'bg-white border-gray-200 text-gray-800 focus:border-sky-500 shadow-sm'
                 }`}
                 required
               />
@@ -210,10 +210,10 @@ export default function KycVerification({
                   value={dob}
                   onChange={(e) => setDob(e.target.value)}
                   placeholder="DD/MM/YYYY"
-                  className={`w-full py-3 px-4 rounded-xl text-sm font-medium border focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all appearance-none cursor-pointer ${
+                  className={`w-full py-3 px-4 rounded-xl text-sm font-medium border focus:outline-none focus:ring-2 focus:ring-sky-500/50 transition-all appearance-none cursor-pointer ${
                     isDarkMode 
-                      ? 'bg-slate-900 border-slate-800 text-white focus:border-violet-500' 
-                      : 'bg-white border-gray-200 text-gray-800 focus:border-violet-500 shadow-sm'
+                      ? 'bg-slate-900 border-slate-800 text-white focus:border-sky-500' 
+                      : 'bg-white border-gray-200 text-gray-800 focus:border-sky-500 shadow-sm'
                   }`}
                   required
                 />
@@ -232,10 +232,10 @@ export default function KycVerification({
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
                 placeholder={isBangla ? 'আপনার জেলার নাম বা ঠিকানা দিন' : 'Enter city name or address'}
-                className={`w-full py-3 px-4 rounded-xl text-sm font-medium border focus:outline-none focus:ring-2 focus:ring-violet-500/50 transition-all ${
+                className={`w-full py-3 px-4 rounded-xl text-sm font-medium border focus:outline-none focus:ring-2 focus:ring-sky-500/50 transition-all ${
                   isDarkMode 
-                    ? 'bg-slate-900 border-slate-800 text-white focus:border-violet-500' 
-                    : 'bg-white border-gray-200 text-gray-800 focus:border-violet-500 shadow-sm'
+                    ? 'bg-slate-900 border-slate-800 text-white focus:border-sky-500' 
+                    : 'bg-white border-gray-200 text-gray-800 focus:border-sky-500 shadow-sm'
                 }`}
                 required
               />
@@ -247,7 +247,7 @@ export default function KycVerification({
           <div className="mt-8 mb-4">
             <button
               onClick={handleNextStep}
-              className="w-full py-3.5 bg-violet-600 hover:bg-violet-700 text-white font-bold rounded-xl shadow-lg active:scale-95 transition-all text-sm tracking-wider uppercase cursor-pointer"
+              className="w-full py-3.5 bg-sky-500 hover:bg-sky-650 hover:bg-sky-600 text-white font-bold rounded-xl shadow-lg active:scale-95 transition-all text-sm tracking-wider uppercase cursor-pointer"
               id="kyc-next-btn"
             >
               {isBangla ? 'পরবর্তী ধাপ' : 'Next'}
@@ -268,7 +268,7 @@ export default function KycVerification({
             }`}>
               {/* Header Box title */}
               <div className="flex items-center gap-3 border-b pb-4 mb-4 border-slate-800/60 dark:border-slate-800/60">
-                <div className="p-2 rounded-xl bg-violet-600/10 text-violet-500">
+                <div className="p-2 rounded-xl bg-sky-500/10 text-sky-400">
                   <IdCard size={20} />
                 </div>
                 <h3 className="font-bold text-sm tracking-wide heading-font select-none">
@@ -288,7 +288,7 @@ export default function KycVerification({
                 <select
                   value={docType}
                   onChange={(e) => setDocType(e.target.value)}
-                  className={`w-full py-3.5 px-4 pr-10 rounded-xl text-xs font-bold text-left border appearance-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-violet-500 ${
+                  className={`w-full py-3.5 px-4 pr-10 rounded-xl text-xs font-bold text-left border appearance-none cursor-pointer focus:outline-none focus:ring-1 focus:ring-sky-500 ${
                     isDarkMode 
                       ? 'bg-slate-900 border-slate-800 text-slate-200' 
                       : 'bg-gray-100 border-gray-200 text-gray-700'
@@ -329,7 +329,7 @@ export default function KycVerification({
                 <div className="flex items-center gap-3">
                   <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
                     isDarkMode ? 'bg-slate-900' : 'bg-gray-200/80'
-                  } text-violet-500 relative overflow-hidden group`}>
+                  } text-sky-400 relative overflow-hidden group`}>
                     {frontPhoto ? (
                       <img src={frontPhoto} alt="Front ID preview" className="w-full h-full object-cover rounded-xl" referrerPolicy="no-referrer" />
                     ) : (
@@ -346,7 +346,7 @@ export default function KycVerification({
                   type="button"
                   onClick={() => frontInputRef.current?.click()}
                   disabled={isUploadingFront}
-                  className="px-4 py-2 text-xs font-bold bg-violet-600 hover:bg-violet-700 text-white rounded-xl shadow transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
+                  className="px-4 py-2 text-xs font-bold bg-sky-500 hover:bg-sky-600 text-white rounded-xl shadow transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
                   id="kyc-upload-front-btn"
                 >
                   {isUploadingFront ? (
@@ -360,13 +360,13 @@ export default function KycVerification({
               {/* Back Side Upload Container */}
               <div className={`p-4 rounded-xl border-2 border-dashed flex items-center justify-between transition-colors ${
                 isDarkMode 
-                  ? 'border-slate-800/80 bg-slate-900/30 text-white hover:bg-slate-900/50' 
+                  ? 'border-slate-800/85 bg-slate-900/30 text-white hover:bg-slate-900/50' 
                   : 'border-gray-200 bg-gray-50/50 text-gray-800 hover:bg-gray-100/50'
               }`}>
                 <div className="flex items-center gap-3">
                   <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
                     isDarkMode ? 'bg-slate-900' : 'bg-gray-200/80'
-                  } text-violet-500 relative overflow-hidden`}>
+                  } text-sky-400 relative overflow-hidden`}>
                     {backPhoto ? (
                       <img src={backPhoto} alt="Back ID preview" className="w-full h-full object-cover rounded-xl" referrerPolicy="no-referrer" />
                     ) : (
@@ -383,7 +383,7 @@ export default function KycVerification({
                   type="button"
                   onClick={() => backInputRef.current?.click()}
                   disabled={isUploadingBack}
-                  className="px-4 py-2 text-xs font-bold bg-violet-600 hover:bg-violet-700 text-white rounded-xl shadow transition-all active:scale-95 disabled:opacity-50 cursor-pointer"
+                  className="px-4 py-2 text-xs font-bold bg-sky-500 hover:bg-sky-600 text-white rounded-xl shadow transition-all active:scale-95 disabled:opacity-50 cursor-pointer shadow-sky-500/5"
                   id="kyc-upload-back-btn"
                 >
                   {isUploadingBack ? (
@@ -414,7 +414,7 @@ export default function KycVerification({
             <button
               onClick={handleVerifySubmit}
               disabled={isSubmitting}
-              className={`w-full py-3.5 bg-violet-600 hover:bg-violet-700 text-white font-bold rounded-xl shadow-lg active:scale-95 transition-all text-sm tracking-wider uppercase flex items-center justify-center gap-2 ${
+              className={`w-full py-3.5 bg-gradient-to-r from-sky-400 to-cyan-500 hover:from-sky-500 hover:to-cyan-600 text-black font-extrabold rounded-xl shadow-lg active:scale-95 transition-all text-sm tracking-wider uppercase flex items-center justify-center gap-2 ${
                 isSubmitting ? 'opacity-70 cursor-wait' : 'cursor-pointer'
               }`}
               id="kyc-submit-verify-btn"

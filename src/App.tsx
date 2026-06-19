@@ -813,7 +813,7 @@ export default function App() {
     }`} id="app-root-wrapper">
 
       {/* FIXED BANNER / APP HEADER */}
-      <header className="sticky top-0 z-30 w-full bg-gradient-to-r from-violet-605 from-violet-600 to-indigo-700 text-white shadow-xl px-4 py-3 flex items-center justify-between" id="app-viewport-header">
+      <header className="sticky top-0 z-30 w-full bg-gradient-to-r from-sky-500 via-cyan-500 to-blue-600 text-white shadow-xl px-4 py-3 flex items-center justify-between" id="app-viewport-header">
         <div className="flex items-center gap-3">
           <button
             onClick={() => setIsSidebarOpen(true)}
@@ -1068,7 +1068,7 @@ export default function App() {
                       id="modal_dep_method"
                       value={depMethod}
                       onChange={(e) => setDepMethod(e.target.value)}
-                      className={`w-full py-2.5 px-3 rounded-xl border focus:outline-none focus:border-violet-500 text-xs font-bold appearance-none cursor-pointer ${
+                      className={`w-full py-2.5 px-3 rounded-xl border focus:outline-none focus:border-sky-500 text-xs font-bold appearance-none cursor-pointer ${
                         isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-gray-100 border-gray-250'
                       }`}
                     >
@@ -1088,9 +1088,9 @@ export default function App() {
                   const currentGW = paymentGateways.find(gw => gw.name === depMethod) || paymentGateways.find(gw => gw.status === 'active');
                   if (!currentGW || !currentGW.number) return null;
                   return (
-                    <div className="p-3 bg-violet-500/[0.04] border border-violet-500/20 rounded-xl space-y-2 select-none">
+                    <div className="p-3 bg-sky-500/[0.04] border border-sky-500/20 rounded-xl space-y-2 select-none">
                       <div className="flex justify-between items-center">
-                        <span className="text-[10px] font-extrabold text-violet-400 tracking-wider uppercase">
+                        <span className="text-[10px] font-extrabold text-sky-400 tracking-wider uppercase">
                           {isBangla ? `${currentGW.name} নম্বর (টাকা পাঠান)` : `Send Money to ${currentGW.name}`}
                         </span>
                         <button
@@ -1099,7 +1099,7 @@ export default function App() {
                             navigator.clipboard.writeText(currentGW.number);
                             alert(isBangla ? 'নম্বরটি কপি করা হয়েছে!' : 'Wallet number copied!');
                           }}
-                          className="py-1 px-2.5 bg-violet-500 hover:bg-violet-400 text-black text-[9px] font-extrabold uppercase rounded-md transition-all active:scale-95 cursor-pointer shadow-sm"
+                          className="py-1 px-2.5 bg-sky-500 hover:bg-sky-400 text-black text-[9px] font-extrabold uppercase rounded-md transition-all active:scale-95 cursor-pointer shadow-sm"
                         >
                           {isBangla ? 'কপি' : 'Copy'}
                         </button>
@@ -1130,7 +1130,7 @@ export default function App() {
                       onChange={(e) => setDepAmount(e.target.value)}
                       placeholder="e.g. 500"
                       min="10"
-                      className={`w-full py-2.5 pl-8 pr-3 rounded-xl border focus:outline-none focus:border-violet-500 text-xs font-bold ${
+                      className={`w-full py-2.5 pl-8 pr-3 rounded-xl border focus:outline-none focus:border-sky-500 text-xs font-bold ${
                         isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-gray-105 border-gray-250 shadow-inner'
                       }`}
                       required
@@ -1140,7 +1140,7 @@ export default function App() {
 
                 {/* Sender mobile number input */}
                 <div>
-                  <label htmlFor="modal_dep_sender" className="text-[10px] font-bold uppercase text-gray-500 block mb-1">
+                  <label htmlFor="modal_dep_sender" className="text-[10px] font-bold uppercase text-gray-400 block mb-1" id="dep-sender-label">
                     {isBangla ? 'যে নম্বর থেকে টাকা পাঠিয়েছেন (বিকাশ/নগদ)' : 'Your Sender Mobile (bKash/Nagad)'}
                   </label>
                   <input
@@ -1149,7 +1149,7 @@ export default function App() {
                     value={depSenderPhone}
                     onChange={(e) => setDepSenderPhone(e.target.value)}
                     placeholder="e.g. 017XXXXXXXX"
-                    className={`w-full py-2.5 px-3 rounded-xl border focus:outline-none focus:border-violet-500 text-xs font-bold ${
+                    className={`w-full py-2.5 px-3 rounded-xl border focus:outline-none focus:border-sky-500 text-xs font-bold ${
                       isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-gray-105 border-gray-300'
                     }`}
                     required
@@ -1167,7 +1167,7 @@ export default function App() {
                     value={depTxId}
                     onChange={(e) => setDepTxId(e.target.value)}
                     placeholder="e.g. 8N7K3S2"
-                    className={`w-full py-2.5 px-3 rounded-xl border focus:outline-none focus:border-violet-500 text-xs font-bold ${
+                    className={`w-full py-2.5 px-3 rounded-xl border focus:outline-none focus:border-sky-500 text-xs font-bold ${
                       isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-gray-105 border-gray-300'
                     }`}
                     required
@@ -1178,7 +1178,7 @@ export default function App() {
                 <button
                   type="submit"
                   disabled={isDepSubmitting}
-                  className="w-full py-3 bg-violet-600 hover:bg-violet-700 text-white font-bold rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-lg active:scale-95 transition-all"
+                  className="w-full py-3 bg-gradient-to-r from-sky-450 from-sky-400 via-sky-500 to-cyan-500 hover:from-sky-500 hover:to-cyan-600 text-black font-black rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-lg active:scale-95 transition-all"
                   id="deposit-submit-btn"
                 >
                   {isDepSubmitting ? (
@@ -1238,7 +1238,7 @@ export default function App() {
                       id="modal_wd_method"
                       value={wdMethod}
                       onChange={(e) => setWdMethod(e.target.value)}
-                      className={`w-full py-2.5 px-3 rounded-xl border focus:outline-none focus:border-violet-500 text-xs font-bold appearance-none cursor-pointer ${
+                      className={`w-full py-2.5 px-3 rounded-xl border focus:outline-none focus:border-sky-505 focus:border-sky-500 text-xs font-bold appearance-none cursor-pointer ${
                         isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-gray-100 border-gray-250'
                       }`}
                     >
@@ -1261,7 +1261,7 @@ export default function App() {
                     value={wdNumber}
                     onChange={(e) => setWdNumber(e.target.value)}
                     placeholder="e.g. 017XXXXXXXX"
-                    className={`w-full py-2.5 px-3 rounded-xl border focus:outline-none focus:border-violet-500 text-xs font-bold ${
+                    className={`w-full py-2.5 px-3 rounded-xl border focus:outline-none focus:border-sky-500 text-xs font-bold ${
                       isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-gray-105 border-gray-300'
                     }`}
                     required
@@ -1282,7 +1282,7 @@ export default function App() {
                       onChange={(e) => setWdAmount(e.target.value)}
                       placeholder="e.g. 500"
                       min="10"
-                      className={`w-full py-2.5 pl-8 pr-3 rounded-xl border focus:outline-none focus:border-violet-500 text-xs font-bold ${
+                      className={`w-full py-2.5 pl-8 pr-3 rounded-xl border focus:outline-none focus:border-sky-500 text-xs font-bold ${
                         isDarkMode ? 'bg-slate-900 border-slate-800 text-white' : 'bg-gray-105 border-gray-250 shadow-inner'
                       }`}
                       required
@@ -1294,7 +1294,7 @@ export default function App() {
                 <button
                   type="submit"
                   disabled={isWdSubmitting}
-                  className="w-full py-3 bg-violet-600 hover:bg-violet-700 text-white font-bold rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-lg active:scale-95 transition-all"
+                  className="w-full py-3 bg-gradient-to-r from-sky-400 to-cyan-500 hover:from-sky-500 hover:to-cyan-600 text-black font-black rounded-xl text-xs uppercase tracking-wider flex items-center justify-center gap-2 cursor-pointer shadow-lg active:scale-95 transition-all"
                   id="withdraw-submit-btn"
                 >
                   {isWdSubmitting ? (
@@ -1381,7 +1381,7 @@ export default function App() {
                       onClick={() => setMockDepAmount(String(v))}
                       className={`flex-1 py-1.5 rounded-lg text-xs font-bold border transition-colors cursor-pointer ${
                         mockDepAmount === String(v)
-                          ? 'bg-violet-600 text-white border-violet-500'
+                          ? 'bg-sky-500 text-white border-sky-400'
                           : isDarkMode 
                             ? 'bg-slate-800 hover:bg-slate-750 text-gray-300 border-slate-700' 
                             : 'bg-gray-100 hover:bg-gray-200 text-gray-700 border-gray-200'
@@ -1530,8 +1530,8 @@ export default function App() {
           onClick={() => setActiveTab('home')}
           className={`flex flex-col items-center gap-1.5 py-1.5 flex-1 relative cursor-pointer ${
             activeTab === 'home' 
-              ? 'text-violet-500 font-extrabold scale-105' 
-              : 'hover:text-violet-500'
+              ? 'text-sky-400 font-extrabold scale-105' 
+              : 'hover:text-sky-400'
           }`}
           id="nav-btn-home"
         >
@@ -1540,7 +1540,7 @@ export default function App() {
             {isBangla ? 'হোম' : 'Home'}
           </span>
           {activeTab === 'home' && (
-            <span className="absolute bottom-[-2px] h-[3px] w-6 bg-violet-600 rounded-full"></span>
+            <span className="absolute bottom-[-2px] h-[3px] w-6 bg-sky-400 rounded-full"></span>
           )}
         </button>
 
@@ -1549,8 +1549,8 @@ export default function App() {
           onClick={() => setActiveTab('vip')}
           className={`flex flex-col items-center gap-1.5 py-1.5 flex-1 relative cursor-pointer ${
             activeTab === 'vip' 
-              ? 'text-violet-500 font-extrabold scale-105' 
-              : 'hover:text-violet-500'
+              ? 'text-sky-400 font-extrabold scale-105' 
+              : 'hover:text-sky-400'
           }`}
           id="nav-btn-vip"
         >
@@ -1559,7 +1559,7 @@ export default function App() {
             VIP
           </span>
           {activeTab === 'vip' && (
-            <span className="absolute bottom-[-2px] h-[3px] w-6 bg-violet-600 rounded-full"></span>
+            <span className="absolute bottom-[-2px] h-[3px] w-6 bg-sky-400 rounded-full"></span>
           )}
         </button>
 
@@ -1568,8 +1568,8 @@ export default function App() {
           onClick={() => setActiveTab('wallet')}
           className={`flex flex-col items-center gap-1.5 py-1.5 flex-1 relative cursor-pointer ${
             activeTab === 'wallet' 
-              ? 'text-violet-500 font-extrabold scale-105' 
-              : 'hover:text-violet-500'
+              ? 'text-sky-400 font-extrabold scale-105' 
+              : 'hover:text-sky-400'
           }`}
           id="nav-btn-wallet"
         >
@@ -1578,7 +1578,7 @@ export default function App() {
             {isBangla ? 'ওয়ালেট' : 'Wallet'}
           </span>
           {activeTab === 'wallet' && (
-            <span className="absolute bottom-[-2px] h-[3px] w-6 bg-violet-600 rounded-full"></span>
+            <span className="absolute bottom-[-2px] h-[3px] w-6 bg-sky-400 rounded-full"></span>
           )}
         </button>
 
@@ -1587,8 +1587,8 @@ export default function App() {
           onClick={() => setActiveTab('account')}
           className={`flex flex-col items-center gap-1.5 py-1.5 flex-1 relative cursor-pointer ${
             activeTab === 'account' 
-              ? 'text-violet-500 font-extrabold scale-105' 
-              : 'hover:text-violet-500'
+              ? 'text-sky-400 font-extrabold scale-105' 
+              : 'hover:text-sky-400'
           }`}
           id="nav-btn-account"
         >
@@ -1597,7 +1597,7 @@ export default function App() {
             {isBangla ? 'প্রোফাইল' : 'Account'}
           </span>
           {activeTab === 'account' && (
-            <span className="absolute bottom-[-2px] h-[3px] w-6 bg-violet-600 rounded-full"></span>
+            <span className="absolute bottom-[-2px] h-[3px] w-6 bg-sky-400 rounded-full"></span>
           )}
         </button>
 
