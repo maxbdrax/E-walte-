@@ -3,8 +3,8 @@
  * SPDX-License-Identifier: Apache-2.0
  */
 
-import React, { useState } from 'react';
-import { Wallet, CreditCard, Pencil, Check, Plus, Send, ShieldCheck, ArrowRightLeft, Copy } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Wallet, CreditCard, Pencil, Check, Plus, Send, ShieldCheck, ArrowRightLeft, Copy, X } from 'lucide-react';
 import { UserProfile, Language, PaymentGateway } from '../types';
 
 interface WalletTabProps {
@@ -14,6 +14,7 @@ interface WalletTabProps {
   onTransfer: (uid: string, amount: number) => boolean;
   isDarkMode: boolean;
   paymentGateways: PaymentGateway[];
+  onUpdateUserGateways?: (updatedGateways: PaymentGateway[]) => void;
 }
 
 export default function WalletTab({
@@ -22,9 +23,42 @@ export default function WalletTab({
   onUpdateWallets,
   onTransfer,
   isDarkMode,
-  paymentGateways
+  paymentGateways,
+  onUpdateUserGateways
 }: WalletTabProps) {
   const isBangla = language === 'বাংলা';
+
+  // User-specific payment gateways list state configured or preseeded
+  const [userGateways, setUserGateways] = useState<PaymentGateway[]>(() => {
+    if (user.paymentGateways && user.paymentGateways.length > 0) {
+      return user.paymentGateways;
+    }
+    const seed: PaymentGateway[] = [
+      { id: `${user.uid}_bkash_personal`, name: 'BKASH PERSONAL', type: 'Personal', brand: 'bkash', status: 'active', number: user.bKashNumber || '01314940236', ownerName: 'Rakib' },
+      { id: `${user.uid}_bkash_merchant`, name: 'BKASH MERCHANT', type: 'Merchant', brand: 'bkash', status: 'active', number: '01304642698', ownerName: 'Rakib' },
+      { id: `${user.uid}_bkash_agent`, name: 'BKASH AGENT', type: 'Agent', brand: 'bkash', status: 'deactive', number: '', ownerName: '' },
+      { id: `${user.uid}_nagad_personal`, name: 'NAGAD PERSONAL', type: 'Personal', brand: 'nagad', status: 'active', number: user.nagadNumber || '01855230911', ownerName: 'Shakil' },
+      { id: `${user.uid}_nagad_merchant`, name: 'NAGAD MERCHANT', type: 'Merchant', brand: 'nagad', status: 'deactive', number: '', ownerName: '' },
+      { id: `${user.uid}_nagad_agent`, name: 'NAGAD AGENT', type: 'Agent', brand: 'nagad', status: 'deactive', number: '', ownerName: '' },
+      { id: `${user.uid}_rocket_personal`, name: 'ROCKET PERSONAL', type: 'Personal', brand: 'rocket', status: 'deactive', number: user.rocketNumber || '', ownerName: '' },
+      { id: `${user.uid}_rocket_merchant`, name: 'ROCKET MERCHANT', type: 'Merchant', brand: 'rocket', status: 'deactive', number: '', ownerName: '' },
+      { id: `${user.uid}_rocket_agent`, name: 'ROCKET AGENT', type: 'Agent', brand: 'rocket', status: 'deactive', number: '', ownerName: '' }
+    ];
+    return seed;
+  });
+
+  // Sync state if user's paymentGateways list gets updated from above
+  useEffect(() => {
+    if (user.paymentGateways && user.paymentGateways.length > 0) {
+      setUserGateways(user.paymentGateways);
+    }
+  }, [user.paymentGateways]);
+
+  // Editing state variables for personalized gateway edit modals
+  const [editingGateway, setEditingGateway] = useState<PaymentGateway | null>(null);
+  const [editGatewayNumber, setEditGatewayNumber] = useState('');
+  const [editGatewayOwnerName, setEditGatewayOwnerName] = useState('');
+  const [editGatewayStatus, setEditGatewayStatus] = useState<'active' | 'deactive'>('active');
 
   // State to manage three tabs inside Wallet section: gateways (default), transfer, linked
   const [activeSubTab, setActiveSubTab] = useState<'gateways' | 'transfer' | 'linked'>('gateways');
@@ -154,14 +188,19 @@ export default function WalletTab({
           {/* Top aesthetic guide block mapping the logo card style */}
           <div className="p-4 rounded-3xl bg-[#1A2536] border border-slate-700/60 shadow-xl space-y-1 relative overflow-hidden">
             <div className="absolute right-0 top-0 translate-x-12 -translate-y-12 w-24 h-24 rounded-full bg-[#5D5FEF]/10 blur-xl pointer-events-none"></div>
-            <h3 className="text-xs font-black text-white uppercase tracking-wider flex items-center gap-1.5">
-              <span className="flex h-2 w-2 rounded-full bg-[#10B981] animate-pulse"></span>
-              {isBangla ? 'সিস্টেম পেমেন্ট গেটওয়েস' : 'Available Deposit/Withdraw Gateways'}
+            <h3 className="text-xs font-black text-white uppercase tracking-wider flex items-center gap-1.5 justify-between">
+              <div className="flex items-center gap-1.5">
+                <span className="flex h-2 w-2 rounded-full bg-[#10B981] animate-pulse"></span>
+                {isBangla ? 'আমার পেমেন্ট গেটওয়ে সেটআপ' : 'My Personal Payment Gateways (Merchant/Personal)'}
+              </div>
+              <span className="text-[10px] text-indigo-400 font-extrabold uppercase bg-indigo-500/10 px-2 py-0.5 rounded-full select-none">
+                {isBangla ? 'সম্পূর্ণ আলাদা' : 'Dedicated'}
+              </span>
             </h3>
             <p className="text-[10.5px] text-gray-300 font-semibold leading-relaxed">
               {isBangla 
-                ? 'ডিপোজিট বা রিচার্জ করার পূর্বে যেকোনো গেটওয়ে নির্বাচন করে নম্বর কপি করে নিন।' 
-                : 'Copy any active mobile account wallet address to quickly deposit or withdraw BDT credits.'}
+                ? 'আপনার বিকাশ, নগদ, রকেট সহ পেমেন্ট গেটওয়ে সমূহ এডিট এবং সক্রিয় বা নিষ্ক্রিয় করুন।' 
+                : 'Configure, activate, or deactivate your personal bKash, Nagad, or Rocket gateway channels.'}
             </p>
           </div>
 
@@ -172,7 +211,7 @@ export default function WalletTab({
                 BKASH
               </div>
               <div className="space-y-3">
-                {paymentGateways.filter(gw => gw.brand === 'bkash').map(gw => (
+                {userGateways.filter(gw => gw.brand === 'bkash').map(gw => (
                   <div 
                     key={gw.id} 
                     className="bg-[#0D192D] border border-slate-800/80 rounded-2xl p-4 flex items-center justify-between shadow-md hover:border-slate-700 transition-all"
@@ -204,27 +243,45 @@ export default function WalletTab({
                       </div>
                     </div>
 
-                    {gw.status === 'active' && gw.number ? (
+                    <div className="flex items-center gap-1.5">
+                      {/* Edit Button */}
                       <button
                         type="button"
                         onClick={() => {
-                          navigator.clipboard.writeText(gw.number);
-                          alert(isBangla ? `বিকাশ নম্বর ${gw.number} কপি করা হয়েছে!` : `${gw.number} copied successfully!`);
+                          setEditingGateway(gw);
+                          setEditGatewayNumber(gw.number);
+                          setEditGatewayOwnerName(gw.ownerName || '');
+                          setEditGatewayStatus(gw.status);
                         }}
-                        className="py-1.5 px-5 bg-[#5D5FEF]/10 hover:bg-[#5D5FEF]/20 text-[#5D5FEF] border border-[#5D5FEF]/30 hover:border-[#5D5FEF]/60 text-[11px] font-black uppercase tracking-wide rounded-xl cursor-pointer transition-all active:scale-95 shadow-sm flex items-center gap-1"
+                        className="py-1.5 px-3 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 hover:border-slate-600 text-[11px] font-black uppercase rounded-xl cursor-pointer transition-all active:scale-95 shadow-sm flex items-center gap-1"
+                        title={isBangla ? 'এডিট বা সেটআপ' : 'Edit / Configure'}
                       >
-                        <Copy size={11} />
-                        <span>{isBangla ? 'কপি' : 'Copy'}</span>
+                        <Pencil size={11} />
+                        <span>{isBangla ? 'সেটআপ' : 'Setup'}</span>
                       </button>
-                    ) : (
-                      <button 
-                        type="button"
-                        disabled
-                        className="py-1.5 px-4 bg-slate-800 text-slate-500 text-[10px] uppercase font-black tracking-wide rounded-xl cursor-not-allowed border border-slate-800/80"
-                      >
-                        {isBangla ? 'নিষ্ক্রিয়' : 'Offline'}
-                      </button>
-                    )}
+
+                      {gw.status === 'active' && gw.number ? (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            navigator.clipboard.writeText(gw.number);
+                            alert(isBangla ? `বিকাশ নম্বর ${gw.number} কপি করা হয়েছে!` : `${gw.number} copied successfully!`);
+                          }}
+                          className="py-1.5 px-3 bg-[#5D5FEF]/15 hover:bg-[#5D5FEF]/25 text-[#5D5FEF] border border-[#5D5FEF]/30 hover:border-[#5D5FEF]/60 text-[11px] font-black uppercase tracking-wide rounded-xl cursor-pointer transition-all active:scale-95 shadow-sm flex items-center gap-1"
+                        >
+                          <Copy size={11} />
+                          <span>{isBangla ? 'কপি' : 'Copy'}</span>
+                        </button>
+                      ) : (
+                        <button 
+                          type="button"
+                          disabled
+                          className="py-1.5 px-3.5 bg-slate-800/40 text-slate-600 text-[10px] uppercase font-black tracking-wide rounded-xl cursor-not-allowed border border-slate-800/50"
+                        >
+                          {isBangla ? 'অফলাইন' : 'Offline'}
+                        </button>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -236,7 +293,7 @@ export default function WalletTab({
                 NAGAD
               </div>
               <div className="space-y-3">
-                {paymentGateways.filter(gw => gw.brand === 'nagad').map(gw => (
+                {userGateways.filter(gw => gw.brand === 'nagad').map(gw => (
                   <div 
                     key={gw.id} 
                     className="bg-[#0D192D] border border-slate-800/80 rounded-2xl p-4 flex items-center justify-between shadow-md hover:border-slate-700 transition-all"
@@ -268,27 +325,45 @@ export default function WalletTab({
                       </div>
                     </div>
 
-                    {gw.status === 'active' && gw.number ? (
+                    <div className="flex items-center gap-1.5">
+                      {/* Edit Button */}
                       <button
                         type="button"
                         onClick={() => {
-                          navigator.clipboard.writeText(gw.number);
-                          alert(isBangla ? `নগদ নম্বর ${gw.number} কপি করা হয়েছে!` : `${gw.number} copied successfully!`);
+                          setEditingGateway(gw);
+                          setEditGatewayNumber(gw.number);
+                          setEditGatewayOwnerName(gw.ownerName || '');
+                          setEditGatewayStatus(gw.status);
                         }}
-                        className="py-1.5 px-5 bg-[#5D5FEF]/10 hover:bg-[#5D5FEF]/20 text-[#5D5FEF] border border-[#5D5FEF]/30 hover:border-[#5D5FEF]/60 text-[11px] font-black uppercase tracking-wide rounded-xl cursor-pointer transition-all active:scale-95 shadow-sm flex items-center gap-1"
+                        className="py-1.5 px-3 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 hover:border-slate-600 text-[11px] font-black uppercase rounded-xl cursor-pointer transition-all active:scale-95 shadow-sm flex items-center gap-1"
+                        title={isBangla ? 'এডিট বা সেটআপ' : 'Edit / Configure'}
                       >
-                        <Copy size={11} />
-                        <span>{isBangla ? 'কপি' : 'Copy'}</span>
+                        <Pencil size={11} />
+                        <span>{isBangla ? 'সেটআপ' : 'Setup'}</span>
                       </button>
-                    ) : (
-                      <button 
-                        type="button"
-                        disabled
-                        className="py-1.5 px-4 bg-slate-800 text-slate-500 text-[10px] uppercase font-black tracking-wide rounded-xl cursor-not-allowed border border-slate-800/80"
-                      >
-                        {isBangla ? 'নিষ্ক্রিয়' : 'Offline'}
-                      </button>
-                    )}
+
+                      {gw.status === 'active' && gw.number ? (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            navigator.clipboard.writeText(gw.number);
+                            alert(isBangla ? `নগদ নম্বর ${gw.number} কপি করা হয়েছে!` : `${gw.number} copied successfully!`);
+                          }}
+                          className="py-1.5 px-3 bg-[#5D5FEF]/15 hover:bg-[#5D5FEF]/25 text-[#5D5FEF] border border-[#5D5FEF]/30 hover:border-[#5D5FEF]/60 text-[11px] font-black uppercase tracking-wide rounded-xl cursor-pointer transition-all active:scale-95 shadow-sm flex items-center gap-1"
+                        >
+                          <Copy size={11} />
+                          <span>{isBangla ? 'কপি' : 'Copy'}</span>
+                        </button>
+                      ) : (
+                        <button 
+                          type="button"
+                          disabled
+                          className="py-1.5 px-3.5 bg-slate-800/40 text-slate-600 text-[10px] uppercase font-black tracking-wide rounded-xl cursor-not-allowed border border-slate-800/50"
+                        >
+                          {isBangla ? 'অফলাইন' : 'Offline'}
+                        </button>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
@@ -300,7 +375,7 @@ export default function WalletTab({
                 ROCKET
               </div>
               <div className="space-y-3">
-                {paymentGateways.filter(gw => gw.brand === 'rocket').map(gw => (
+                {userGateways.filter(gw => gw.brand === 'rocket').map(gw => (
                   <div 
                     key={gw.id} 
                     className="bg-[#0D192D] border border-slate-800/80 rounded-2xl p-4 flex items-center justify-between shadow-md hover:border-slate-700 transition-all"
@@ -332,31 +407,168 @@ export default function WalletTab({
                       </div>
                     </div>
 
-                    {gw.status === 'active' && gw.number ? (
+                    <div className="flex items-center gap-1.5">
+                      {/* Edit Button */}
                       <button
                         type="button"
                         onClick={() => {
-                          navigator.clipboard.writeText(gw.number);
-                          alert(isBangla ? `রকেট নম্বর ${gw.number} কপি করা হয়েছে!` : `${gw.number} copied successfully!`);
+                          setEditingGateway(gw);
+                          setEditGatewayNumber(gw.number);
+                          setEditGatewayOwnerName(gw.ownerName || '');
+                          setEditGatewayStatus(gw.status);
                         }}
-                        className="py-1.5 px-5 bg-[#5D5FEF]/10 hover:bg-[#5D5FEF]/20 text-[#5D5FEF] border border-[#5D5FEF]/30 hover:border-[#5D5FEF]/60 text-[11px] font-black uppercase tracking-wide rounded-xl cursor-pointer transition-all active:scale-95 shadow-sm flex items-center gap-1"
+                        className="py-1.5 px-3 bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 hover:border-slate-600 text-[11px] font-black uppercase rounded-xl cursor-pointer transition-all active:scale-95 shadow-sm flex items-center gap-1"
+                        title={isBangla ? 'এডিট বা সেটআপ' : 'Edit / Configure'}
                       >
-                        <Copy size={11} />
-                        <span>{isBangla ? 'কপি' : 'Copy'}</span>
+                        <Pencil size={11} />
+                        <span>{isBangla ? 'সেটআপ' : 'Setup'}</span>
                       </button>
-                    ) : (
-                      <button 
-                        type="button"
-                        disabled
-                        className="py-1.5 px-4 bg-slate-800 text-slate-500 text-[10px] uppercase font-black tracking-wide rounded-xl cursor-not-allowed border border-slate-800/80"
-                      >
-                        {isBangla ? 'নিষ্ক্রিয়' : 'Offline'}
-                      </button>
-                    )}
+
+                      {gw.status === 'active' && gw.number ? (
+                        <button
+                          type="button"
+                          onClick={() => {
+                            navigator.clipboard.writeText(gw.number);
+                            alert(isBangla ? `রকেট নম্বর ${gw.number} কপি করা হয়েছে!` : `${gw.number} copied successfully!`);
+                          }}
+                          className="py-1.5 px-3 bg-[#5D5FEF]/15 hover:bg-[#5D5FEF]/25 text-[#5D5FEF] border border-[#5D5FEF]/30 hover:border-[#5D5FEF]/60 text-[11px] font-black uppercase tracking-wide rounded-xl cursor-pointer transition-all active:scale-95 shadow-sm flex items-center gap-1"
+                        >
+                          <Copy size={11} />
+                          <span>{isBangla ? 'কপি' : 'Copy'}</span>
+                        </button>
+                      ) : (
+                        <button 
+                          type="button"
+                          disabled
+                          className="py-1.5 px-3.5 bg-slate-800/40 text-slate-600 text-[10px] uppercase font-black tracking-wide rounded-xl cursor-not-allowed border border-slate-800/50"
+                        >
+                          {isBangla ? 'অফলাইন' : 'Offline'}
+                        </button>
+                      )}
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Personalized User Gateway Setup Modal Overlay */}
+      {editingGateway && (
+        <div className="fixed inset-0 bg-black/85 flex items-center justify-center p-4 z-50 animate-fade-in font-sans">
+          <div 
+            className="bg-[#121B2D] border border-slate-800 rounded-3xl w-full max-w-sm overflow-hidden shadow-2xl relative p-6 space-y-5"
+            id="user-edit-gateway-dialog"
+          >
+            {/* Close Button X */}
+            <button
+              type="button"
+              onClick={() => setEditingGateway(null)}
+              className="absolute right-5 top-5 w-8 h-8 rounded-full bg-slate-850 hover:bg-slate-850/80 text-slate-400 hover:text-white flex items-center justify-center transition-all cursor-pointer border border-slate-800"
+            >
+              <X size={14} />
+            </button>
+
+            {/* Title */}
+            <div>
+              <h3 className="text-base font-black text-white tracking-tight">
+                {isBangla ? 'পেমেন্ট গেটওয়ে সেটআপ' : 'Setup Gateway Channel'}
+              </h3>
+              <p className="text-[10px] text-gray-400 font-extrabold mt-1 uppercase tracking-wider flex items-center gap-1">
+                <span className="inline-block w-2 h-2 rounded-full bg-indigo-500"></span>
+                {editingGateway.brand} — {editingGateway.name}
+              </p>
+            </div>
+
+            {/* Setup Form */}
+            <form 
+              onSubmit={(e) => {
+                e.preventDefault();
+                const updated = userGateways.map(g => {
+                  if (g.id === editingGateway.id) {
+                    return {
+                      ...g,
+                      number: editGatewayNumber,
+                      ownerName: editGatewayOwnerName,
+                      status: editGatewayStatus
+                    };
+                  }
+                  return g;
+                });
+                setUserGateways(updated);
+                onUpdateUserGateways?.(updated);
+                
+                // Keep connected wallet profile fields also in sync!
+                if (editingGateway.brand === 'bkash' && editingGateway.type === 'Personal') {
+                  onUpdateWallets(editGatewayNumber, undefined, undefined);
+                } else if (editingGateway.brand === 'nagad' && editingGateway.type === 'Personal') {
+                  onUpdateWallets(undefined, editGatewayNumber, undefined);
+                } else if (editingGateway.brand === 'rocket' && editingGateway.type === 'Personal') {
+                  onUpdateWallets(undefined, undefined, editGatewayNumber);
+                }
+
+                setEditingGateway(null);
+                alert(isBangla ? 'পেমেন্ট গেটওয়ে তথ্য সঠিকভাবে আপডেট করা হয়েছে!' : 'Gateway channel details saved successfully!');
+              }} 
+              className="space-y-4 text-left"
+            >
+              {/* Wallet Owner Name */}
+              <div>
+                <label className="text-[10px] text-gray-400 font-extrabold uppercase tracking-widest pl-1 block mb-1">
+                  {isBangla ? 'হোল্ডার নাম (যেমন: রাকিব)' : 'Owner Title (e.g. Rakib)'}
+                </label>
+                <input
+                  type="text"
+                  value={editGatewayOwnerName}
+                  onChange={(e) => setEditGatewayOwnerName(e.target.value)}
+                  placeholder={isBangla ? 'অ্যাকাউন্ট নাম দিন' : 'Enter account name'}
+                  className="w-full bg-[#0F1726]/90 border border-slate-800 focus:border-indigo-500 rounded-xl px-4 py-3 text-sm font-semibold text-white focus:outline-none transition-all placeholder-gray-500 font-sans"
+                  required
+                />
+              </div>
+
+              {/* Wallet Number */}
+              <div>
+                <label className="text-[10px] text-gray-400 font-extrabold uppercase tracking-widest pl-1 block mb-1">
+                  {isBangla ? 'মোবাইল অ্যাকাউন্ট নম্বর' : 'Mobile Gateway Number'}
+                </label>
+                <input
+                  type="text"
+                  value={editGatewayNumber}
+                  onChange={(e) => setEditGatewayNumber(e.target.value)}
+                  placeholder={isBangla ? 'নম্বর লিখুন' : '01314940236'}
+                  className="w-full bg-[#0F1726]/90 border border-slate-800 focus:border-indigo-500 rounded-xl px-4 py-3 text-sm font-semibold text-white focus:outline-none transition-all font-mono tracking-wide placeholder-gray-500"
+                  required
+                />
+              </div>
+
+              {/* Status Selector */}
+              <div>
+                <label className="text-[10px] text-gray-400 font-extrabold uppercase tracking-widest pl-1 block mb-1">
+                  {isBangla ? 'চ্যানেল স্ট্যাটাস' : 'Channel Status'}
+                </label>
+                <div className="relative">
+                  <select
+                    value={editGatewayStatus}
+                    onChange={(e) => setEditGatewayStatus(e.target.value as any)}
+                    className="w-full bg-[#0F1726]/90 border border-slate-800 focus:border-indigo-500 rounded-xl px-4 py-3 text-sm font-semibold text-white focus:outline-none transition-all appearance-none cursor-pointer"
+                  >
+                    <option value="active">active (সক্রিয়)</option>
+                    <option value="deactive">deactive (নিষ্ক্রিয়)</option>
+                  </select>
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 pointer-events-none text-xs">▼</span>
+                </div>
+              </div>
+
+              {/* Save Button */}
+              <button
+                type="submit"
+                className="w-full py-3 bg-[#5D5FEF] text-white font-extrabold text-sm uppercase rounded-xl shadow-lg shadow-[#5D5FEF]/1a hover:bg-[#4d4fdf] active:scale-[0.98] transition-all cursor-pointer text-center"
+              >
+                {isBangla ? 'সংরক্ষণ করুন' : 'Save Details'}
+              </button>
+            </form>
           </div>
         </div>
       )}

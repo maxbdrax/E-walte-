@@ -47,6 +47,7 @@ export interface UserProfile {
   bKashNumber?: string;
   nagadNumber?: string;
   rocketNumber?: string;
+  paymentGateways?: PaymentGateway[];
 }
 
 export interface Notification {

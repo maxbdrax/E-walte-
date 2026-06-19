@@ -409,18 +409,31 @@ export default function App() {
 
   // 4. Update Connected payment channels details
   const handleUpdateWallets = (bKashNum?: string, nagadNum?: string, rocketNum?: string) => {
-    setUser(prev => ({
-      ...prev,
-      bKashNumber: bKashNum || prev.bKashNumber,
-      nagadNumber: nagadNum || prev.nagadNumber,
-      rocketNumber: rocketNum || prev.rocketNumber
-    }));
+    setUser(prev => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        bKashNumber: bKashNum !== undefined ? bKashNum : prev.bKashNumber,
+        nagadNumber: nagadNum !== undefined ? nagadNum : prev.nagadNumber,
+        rocketNumber: rocketNum !== undefined ? rocketNum : prev.rocketNumber
+      };
+    });
 
     alert(
       language === 'বাংলা'
         ? 'আপনার পেমেন্ট অ্যাকাউন্ট তথ্য সফলভাবে যুক্ত ও আপডেট করা হয়েছে!'
         : 'Linked payment channels saved securely!'
     );
+  };
+
+  const handleUpdateUserGateways = (updatedGateways: PaymentGateway[]) => {
+    setUser(prev => {
+      if (!prev) return null;
+      return {
+        ...prev,
+        paymentGateways: updatedGateways
+      };
+    });
   };
 
   // 5. Instantly Transfer BDT to another UID (P2P Send Money)
@@ -921,6 +934,7 @@ export default function App() {
                 onTransfer={handleTransfer}
                 isDarkMode={isDarkMode}
                 paymentGateways={paymentGateways}
+                onUpdateUserGateways={handleUpdateUserGateways}
               />
             </motion.div>
           )}

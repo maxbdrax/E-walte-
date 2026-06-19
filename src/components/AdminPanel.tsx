@@ -877,11 +877,43 @@ export default function AdminPanel({
                     <span className="text-[10px] text-gray-500">UID: {u.uid}</span>
                   </div>
                   {u.kycDetails && (
-                    <div className="mt-2.5 p-3 bg-[#111111] border border-[#222222]/80 rounded-lg text-[11px] font-medium space-y-1 my-2">
-                      <div><strong className="text-gray-400">{isBangla ? 'পূর্ণ নাম:' : 'Full name:'}</strong> {u.kycDetails.firstName} {u.kycDetails.lastName}</div>
-                      <div><strong className="text-gray-400">{isBangla ? 'জন্ম তারিখ:' : 'Birth date:'}</strong> {u.kycDetails.dob}</div>
-                      <div><strong className="text-gray-400">{isBangla ? 'শহর / সিটি:' : 'Residence City:'}</strong> {u.kycDetails.city}</div>
-                      <div><strong className="text-gray-400">{isBangla ? 'ডকুমেন্ট বিবরণ:' : 'Document format:'}</strong> {u.kycDetails.docType}</div>
+                    <div className="space-y-3.5">
+                      <div className="mt-2.5 p-3 bg-[#111111] border border-[#222222]/80 rounded-lg text-[11px] font-medium space-y-1">
+                        <div><strong className="text-gray-400">{isBangla ? 'পূর্ণ নাম:' : 'Full name:'}</strong> {u.kycDetails.firstName} {u.kycDetails.lastName}</div>
+                        <div><strong className="text-gray-400">{isBangla ? 'জন্ম তারিখ:' : 'Birth date:'}</strong> {u.kycDetails.dob}</div>
+                        <div><strong className="text-gray-400">{isBangla ? 'শহর / সিটি:' : 'Residence City:'}</strong> {u.kycDetails.city}</div>
+                        <div><strong className="text-gray-400">{isBangla ? 'ডকুমেন্ট বিবরণ:' : 'Document format:'}</strong> {u.kycDetails.docType}</div>
+                      </div>
+                      
+                      {/* Uploaded NID Photos */}
+                      <div className="grid grid-cols-2 gap-3 mt-2">
+                        {u.kycDetails.frontPhoto && (
+                          <div className="space-y-1.5">
+                            <span className="text-[10px] text-gray-500 font-bold block">{isBangla ? 'এনআইডি ফ্রন্ট সাইড' : 'NID Front Side'}</span>
+                            <div className="relative group rounded-xl overflow-hidden border border-slate-800 bg-slate-900/50 aspect-video flex items-center justify-center p-1">
+                              <img 
+                                src={u.kycDetails.frontPhoto} 
+                                alt="NID Front" 
+                                className="max-h-28 max-w-full object-contain rounded-lg transition-transform hover:scale-105"
+                                referrerPolicy="no-referrer"
+                              />
+                            </div>
+                          </div>
+                        )}
+                        {u.kycDetails.backPhoto && (
+                          <div className="space-y-1.5">
+                            <span className="text-[10px] text-gray-500 font-bold block">{isBangla ? 'এনআইডি ব্যাক সাইড' : 'NID Back Side'}</span>
+                            <div className="relative group rounded-xl overflow-hidden border border-slate-800 bg-slate-900/50 aspect-video flex items-center justify-center p-1">
+                              <img 
+                                src={u.kycDetails.backPhoto} 
+                                alt="NID Back" 
+                                className="max-h-28 max-w-full object-contain rounded-lg transition-transform hover:scale-105"
+                                referrerPolicy="no-referrer"
+                              />
+                            </div>
+                          </div>
+                        )}
+                      </div>
                     </div>
                   )}
                 </div>
