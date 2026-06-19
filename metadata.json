@@ -1,0 +1,6 @@
+{
+  "name": "E-Wallet",
+  "description": "A high-fidelity fintech and E-Wallet dashboard with interactive deposit, withdrawal, real-time balance updates, KYC identity verification, dark mode, dynamic transactions list, and support center.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
